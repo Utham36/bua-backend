@@ -1,3 +1,4 @@
+import os
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -10,7 +11,7 @@ from .serializers import ConversationSerializer, MessageSerializer
 # 👇 1. GOOGLE AI SETUP
 import google.generativeai as genai
 # YOUR API KEY
-genai.configure(api_key="AIzaSyDVJABJbkZwoZXP8oCkB7T7PQKGALWCZT0")
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 # 👇 2. DATABASE IMPORTS (Safe Mode)
 # This prevents crashes if the tables are empty or missing
