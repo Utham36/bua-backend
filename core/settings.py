@@ -118,15 +118,22 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Enable WhiteNoise to serve static files on Render
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# CORS Settings
+# --- UPDATED CORS SETTINGS START ---
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://bua-backend.onrender.com", # Added your Render URL
+    "https://bua-backend.onrender.com",
+    "https://halaal-frontend.vercel.app",  # 👈 Added your Frontend URL
 ]
+
+# This allows Django to pick up the list you typed into the Render Dashboard
+extra_origin = os.getenv("CORS_ALLOWED_ORIGINS")
+if extra_origin:
+    CORS_ALLOWED_ORIGINS.append(extra_origin)
 
 # Also allow credentials (important for login cookies)
 CORS_ALLOW_CREDENTIALS = True
+# --- UPDATED CORS SETTINGS END ---
 
 # SETTINGS FOR UPLOADED FILES (IMAGES)
 MEDIA_URL = '/media/'
@@ -165,7 +172,7 @@ LOGGING = {
         'django': {
             'handlers': ['file'],
             'level': 'ERROR',
-            'propaagate': True,
+            'propagate': True,
         },
     },
 }
