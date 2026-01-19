@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
-SECRET_KEY = 'django-insecure-5r!wox&+4tg1v7sk$2@&04v+-u_5hfnd3st0-1bny0s4g2%yzv'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-5r!wox&+4tg1v7sk$2@&04v+-u_5hfnd3st0-1bny0s4g2%yzv')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -22,12 +22,19 @@ ALLOWED_HOSTS = ['*']  # Allows Render to host the site
 # Application definition
 
 INSTALLED_APPS = [
+    # Custom Apps
     'catalog', 
     'users',
     'orders', 
     'chat',
+    
+    # Third-Party Apps
     'rest_framework',
     'corsheaders',
+    'cloudinary_storage', # 👈 Added for Cloudinary
+    'cloudinary',         # 👈 Added for Cloudinary
+    
+    # Django Apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -135,9 +142,22 @@ if extra_origin:
 CORS_ALLOW_CREDENTIALS = True
 # --- UPDATED CORS SETTINGS END ---
 
-# SETTINGS FOR UPLOADED FILES (IMAGES)
+
+# --- CLOUDINARY CONFIGURATION (NEW) ---
+# This tells Django to use Cloudinary for uploaded images (Products, Avatars)
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET')
+}
+
+# Set Cloudinary as the default storage for media files
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+# --------------------------------------
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
